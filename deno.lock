@@ -1,0 +1,17 @@
+{
+  "version": "4",
+  "specifiers": {
+    "jsr:@std/cli@*": "1.0.14",
+    "jsr:@std/cli@^1.0.14": "1.0.14"
+  },
+  "jsr": {
+    "@std/cli@1.0.14": {
+      "integrity": "b09ee9921cd476c0e08185ed2bfce682d45ecf4654f26c31b4aa244a2c5c024e"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/cli@^1.0.14"
+    ]
+  }
+}

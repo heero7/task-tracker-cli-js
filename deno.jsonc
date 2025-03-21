@@ -1,0 +1,9 @@
+{
+  // Commands to use with this project
+  "tasks": {
+    "dev": "deno run -R -W main.js "
+  },
+  "imports": {
+    "@std/cli": "jsr:@std/cli@^1.0.14"
+  }
+}
