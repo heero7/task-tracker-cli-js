@@ -158,6 +158,16 @@ let cliActive = dataLoad.fileLoaded;
 const data = dataLoad.data;
 
 // todo: only show the main prompt if asked to. because then we can't see anything
+// also having a constant prompt is not what the goal is. just call functions
+// like tci add "sample thing". the due date should not be added.
+    // so instead we can just have a list of items. 
+    // tci add "make pasta"
+    // { name: "make pasta", dueDate: null, status: 0 }
+    // tci update "make pasta" --d 03,13 (month day)
+    // tci update 1 --done|ip|todo
+    // tci delete 1 --all
+    // tci list --done|ip|todo
+//
 while (cliActive) {
   const selected = prompt(mainMenuPrompt);
   if (selected == "8") {
