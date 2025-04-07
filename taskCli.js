@@ -1,7 +1,14 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
 
+const Task_Status = {
+    UN_PRIORITIZED : 0,
+    IN_PROGRESS : 1,
+    COMPLETED : 2
+};
+
 const args = parseArgs(Deno.args, {
     boolean: ["a","u","r","l","d"],
+    string: ["duedate", "status", "name"],
     alias: {
         dev: "d",
         add: "a",
@@ -30,11 +37,38 @@ if (multipleActions.length > 1) {
 
 // Check if the file has been created. If not create one.
 const tasks = await loadTasks();
-console.log(tasks);
 
 // Next step, peform an action.
 if (args.add) {
     console.log("Adding a task!");
+    const { name, duedate, status } = args;
+    // name cannot be empty, but dueDate, status can be empty or error.
+    if (!name) {
+        console.error(`❌ cannot add a task with an empty name.
+            usage: task-cli -a "my task name"
+            use task-cli --help for details`);
+        Deno.exit();
+    }
+    const task = { id: 0 };
+    task.name = name;
+    // todo: parse due date
+    console.log(duedate);
+    // parse status
+    const taskStatus = parseInt(status);
+    if (isNaN(taskStatus)) {
+        console.log(`[TaskCLI:debug] ${status}, was not a number while adding.`);
+        task.status = 0;
+    }
+    else if (taskStatus < 0 || taskStatus > 2) {
+        console.log(`[TaskCLI:debug] ${status}, was out of range.`);
+        task.status = 0
+    } else {
+        task.status = taskStatus;
+    }
+    console.log("status", status);
+    tasks.tasks.push(task);
+    console.log(tasks.tasks);
+    // then we gotta write to this.
 } else if (args.update) {
     console.log("Update");
 } else if (args.removeTask) {
@@ -71,7 +105,7 @@ async function loadTasks() {
           write: true
         });
         const tasks = JSON.parse(taskFile);
-        console.log("Successfully created a task file.");
+        //console.log("[TaskCLI:debug]Successfully created a task file.");
         return tasks;
     }
   } else {
@@ -80,15 +114,20 @@ async function loadTasks() {
           read: true, 
           write: true
       });
-      console.log(taskFile);
       const tasks = JSON.parse(taskFile);
-      console.log("Successfully found a tasks file.");
+      //console.log("[TaskCLI:debug]Successfully found a tasks file.");
       return tasks;
   }
 }
 
+// should probably move all of the file stuff to some service.
+function saveTask() {
+    // saves to the tasks.
+}
+
 
 function addTask() {
+
 }
 
 function helpPrompt() {
